@@ -1,6 +1,7 @@
-import re, ystockquote, codecs
+import re, codecs
 import dictToObj
 import logging
+import StockInfoLoader.ystockquote as ystockquote
 
 logging.basicConfig(level=logging.DEBUG)
 logger = logging.getLogger('StockPortfolio')
