@@ -7,7 +7,7 @@
 import webapp2
 import cgi
 from google.appengine.ext.webapp.util import run_wsgi_app
-from StockInfoLoader import db_stock_price
+#from Common import db_stock_price
 from StockInfoLoader import ystockquote
 
 # template test
@@ -35,7 +35,7 @@ class MainPage(webapp2.RequestHandler):
         
         # set default GOOG      
         if self.request.get('sname') == "":
-           stockName = 'GOOG'
+            stockName = 'GOOG'
         else:
             stockName = self.request.get('sname')
 

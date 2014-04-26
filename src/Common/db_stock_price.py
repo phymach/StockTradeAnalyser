@@ -20,10 +20,23 @@ class StockPrice(db.Model):
     volume = db.IntegerProperty()
     
 
-def insertPrice(code, date_time, open_price, high_price, low_price, close_price, price_change, volume):
-    StockPrice(code=code, date_time=date_time, open_price=open_price,
+def insert_price(code, date_time, open_price, high_price, low_price, close_price, price_change, volume):
+    s = StockPrice(code=code, date_time=date_time, open_price=open_price,
                high_price=high_price, low_price=low_price, close_price=close_price,
                price_change=price_change, volume=volume)
+    s.put()
+    
+def get_price(code, date_time):
+    q = db.Query(StockPrice)
+    q.filter('code =', code)
+    q.filter('date_time =', date_time)
+    #q.ancestor(ancestor_key)
+    #q.order('-date')
+    #for record in q.run(limit=5):
+    #    print record.close_price
+    result = q.get()
+    print result.close_price
+    return result.close_price
 
 #class Employee(db.Model):
 #    name = db.StringProperty(required=True)
