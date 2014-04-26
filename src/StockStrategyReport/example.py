@@ -8,7 +8,7 @@ Created on 2012/11/29
 # The ystockquote module provides a Python API for retrieving stock data from Yahoo Finance.
 
 # Sample Usage:
-import ystockquote
+from StockInfoLoader import ystockquote
 print ystockquote.get_price('2498.TW')
 #529.46
 stock_info =  ystockquote.get_all('000.TW')

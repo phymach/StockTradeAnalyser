@@ -10,8 +10,8 @@ from google.appengine.api import users
 
 
 class StockPrice(db.Model):
-    code = db.IntegerProperty(required=True)
-    date_time = db.DateProperty(required=True)
+    code = db.StringProperty(required=True)
+    date_time = db.DateTimeProperty(required=True)
     open_price = db.FloatProperty()
     high_price = db.FloatProperty()
     low_price = db.FloatProperty()

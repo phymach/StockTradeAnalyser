@@ -1,5 +1,4 @@
 import re, codecs
-import Common.dictToObj as dictToObj
 import logging
 import StockInfoLoader.ystockquote as ystockquote
 
