@@ -4,10 +4,14 @@ Created on 2014/4/18
 @author: phymach
 '''
 
+import inspect
 import datetime
+import logging
 from google.appengine.ext import db
 from google.appengine.api import users
 
+logging.basicConfig(level=logging.DEBUG)
+logger = logging.getLogger('db_stock_price')
 
 class StockPrice(db.Model):
     code = db.StringProperty(required=True)
@@ -24,6 +28,7 @@ def insert_price(code, date_time, open_price, high_price, low_price, close_price
     s = StockPrice(code=code, date_time=date_time, open_price=open_price,
                high_price=high_price, low_price=low_price, close_price=close_price,
                price_change=price_change, volume=volume)
+    logger.debug('[%s] Insert record:  code=%s, date_time=%s' % (inspect.getframeinfo(inspect.currentframe())[2], code, datetime.datetime.strftime(date_time,'%Y/%m/%d')))
     s.put()
     
 def get_price(code, date_time):

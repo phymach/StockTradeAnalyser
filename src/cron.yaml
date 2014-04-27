@@ -1,0 +1,4 @@
+cron:
+- description: stock Info loader
+  url: /StockInfoLoader/loader.py
+  schedule: every 1 mins
