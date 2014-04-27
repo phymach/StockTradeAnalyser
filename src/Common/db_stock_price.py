@@ -40,8 +40,9 @@ def get_price(code, date_time):
     #for record in q.run(limit=5):
     #    print record.close_price
     result = q.get()
-    print result.close_price
-    return result.close_price
+    if result:
+        print result.close_price
+        return result.close_price
 
 #class Employee(db.Model):
 #    name = db.StringProperty(required=True)
