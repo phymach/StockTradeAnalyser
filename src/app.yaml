@@ -5,6 +5,9 @@ api_version: 1
 threadsafe: yes
 
 handlers:
+- url: /WebComponents
+  static_dir: WebComponents
+  
 - url: .*
   script: main_stocktradeanalyser.app
 
