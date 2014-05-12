@@ -1,16 +1,26 @@
 # -*- coding: utf-8 -*-
 
 #############################################################
-# Web index
+# Web index: Index for other pages
 # Initial file - Gary - 05/04/2014
-# Last modified - Gary - 05/04/2014
+# Last modified - Gary - 05/11/2014
 #############################################################
 
-
+#
 import webapp2
 import cgi
 from datetime import datetime
 from Common import db_stock_price
+
+# WEB Tabs
+from WebComponents import web_news
+from WebComponents import web_stock_info
+from WebComponents import web_stock_trade_assistant
+from WebComponents import web_stock_trade_report
+from WebComponents import web_app_info
+from WebComponents import web_about
+from WebComponents import web_registration
+from WebComponents import web_user_profile
 
 #def ini(code, date):
 #    stockCode = "2330.tw"
