@@ -3,7 +3,7 @@
 #############################################################
 # Web index: Index for other pages
 # Initial file - Gary - 05/04/2014
-# Last modified - Gary - 05/11/2014
+# Last modified - Gary - 05/18/2014
 #############################################################
 
 #
@@ -37,14 +37,23 @@ def show_header():
     #herder += "</script>"
     header += "<link type='text/css' rel='stylesheet' href='/WebComponents/webstyle.css' />"
     header += "</head>"
-    header += "<body>"
+    header += "<body> <div>"
+    header += "<div class='style_header'>"
+    header += "<img src='/WebComponents/logo.png'>"
+    header += "<div class='style_menu'>"
+    header += "<a href='tw.yahoo.com'> NEWS </a>"
+    header += "<a href='www.google.com'> Stock Info </a>"
+    header += "<a href=''> Stock Report </a>"
+    header += "</div>"
+    header += "</div>"
+    header += "<div class='style_body'>"
     return header
 
 
 # CONTENT
 MAIN_PAGE_CONTENT_FORM = """\
     
-    <H2>Hello, welcome to StockTradeAnalyser!</H2>
+    <div class='style_headline'>Hello, welcome to StockTradeAnalyser!</div>
         <form>
           Stock ID:<input value="2330.tw" name="sname">
           , Date:<input type="date" name="sdate" id="sdate" value="2014-01-01">
@@ -68,7 +77,11 @@ def show_content(stockName, selected_date):
 
 # FOOTER
 MAIN_PAGE_FOOTER_TEMPLATE = """\
-        <p id='footer_CopyRight'>©2014 All Right Reserved.<p>
+        </div>
+        <div class="style_footer">
+            <div id='footer_CopyRight'>©2014 All Right Reserved.</div>
+        </div>
+        </div>
       </body>
     </html>
     """

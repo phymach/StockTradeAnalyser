@@ -1,8 +1,41 @@
 /********************************************************
 # StyleSheet of Web
 # Initial file - Gary - 05/04/2014
-# Last modified - Gary - 05/04/2014
+# Last modified - Gary - 05/18/2014
 ********************************************************/
 
-BODY {font-family: Times;}
-H2 {color: red;}
+/* General style */
+BODY {
+	font-family: Times;
+	background-color: #C0C0C0;
+}
+
+
+/* Style for each sections */
+div.style_header {
+	background-color: #40B3FF;
+}
+
+div.style_headline {
+	color: #00FF00;
+	font-size: 36px;
+}
+
+div.style_menu {
+	background-color: #40B3FF;
+}
+
+div.style_body {
+	background-color: #FFFFFF;
+}
+
+div.style_footer {
+	text-align:center;
+	opacity: 0.8;
+	background-color: #40B3FF;
+	height: 60px;
+}
+
+div.style_menu a {
+	hover: #FFFFFF;
+}
