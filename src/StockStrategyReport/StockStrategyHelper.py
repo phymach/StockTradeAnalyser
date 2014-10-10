@@ -27,13 +27,13 @@ class StockPortfolio(object):
     def priceBelow(self, floatPrice):
         for stock_id in self.dict_stock_id.keys():
             stock_price = eval(ystockquote.get_price('%s.TW' % stock_id))
-            if stock_price==0.0 or stock_price>floatPrice:
+            if stock_price==0.0 or stock_price > floatPrice:
                 del self.dict_stock_id[stock_id]
 
     def dividendAbove(self, floatDividend):
         for stock_id in self.dict_stock_id.keys():
             stock_dividend = eval(ystockquote.get_dividend_per_share('%s.TW' % stock_id))
-            if stock_dividend<floatDividend:
+            if stock_dividend < floatDividend:
                 del self.dict_stock_id[stock_id]
     
     def near52WeekLow(self, floatPercentage):
