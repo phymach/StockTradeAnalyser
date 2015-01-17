@@ -2,7 +2,7 @@ import re, codecs
 import logging
 import StockInfoLoader.ystockquote as ystockquote
 
-logging.basicConfig(level=logging.DEBUG)
+logging.basicConfig(level=logging.DEBUG, format='%(asctime)s %(message)s', datefmt='%m/%d/%Y %I:%M:%S')
 logger = logging.getLogger('StockPortfolio')
 
 class StockPortfolio(object):

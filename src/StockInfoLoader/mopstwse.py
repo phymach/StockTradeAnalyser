@@ -10,7 +10,11 @@
 '''
 
 import csv, codecs, urllib, datetime, os, time
+import logging
 from sgmllib import SGMLParser
+
+logging.basicConfig(level=logging.DEBUG, format='%(asctime)s %(message)s', datefmt='%m/%d/%Y %I:%M:%S')
+logger = logging.getLogger('mopstwse')
     
 def main():
     #上市櫃公司自90年6月才有登入月營收資料
@@ -92,7 +96,7 @@ class Parser_htm(SGMLParser):
     #初始化變數數值
     def reset(self):
         SGMLParser.reset(self)
-        self.bPrintDetail = False
+        self.bPrintDetail = True
         self.bStartParserHeml = False
         self.bStartParserdata = False
         self.bDataempty = False
@@ -178,15 +182,14 @@ class Parser_htm(SGMLParser):
             data = unicode(text.strip(), "BIG5").encode('utf8').split('：')
             self.szitemclass = unicode(data[1], "utf8")
             if self.bPrintDetail:
-                print "產業別 :          " + self.szitemclass.encode('utf8') 
+                logger.debug('產業別 :    %s' % self.szitemclass.encode('utf8'))
             self.bItemclass = False
                
         if self.bStartParserdata:
-            
             #公司代碼或稱股票代碼
             if self.bStockid :
                 if self.bPrintDetail:
-                    print "公司代號 :        " + text.strip()
+                    logger.debug('公司代號 :    %s' % text.strip())
                 self.szstockid = text.strip()
                 self.stockdata.append(self.szitemclass)
                 self.stockdata.append(self.szstockid)
@@ -195,31 +198,10 @@ class Parser_htm(SGMLParser):
 
             #公司名稱
             if self.bCompanyname :
-                #使用BIG5解碼,因為支援字型不夠,就需要加入以下的內容,若使用cp950解碼,只需加入網頁無法呈現的字型即可                
-                """if self.szstockid == '1325':
-                    data = u'恒大'
-                elif self.szstockid == '2353':
-                    data = u'宏碁'
-                elif self.szstockid == '3046':
-                    data = u'建碁'
-                elif self.szstockid == '6285':
-                    data = u'啟碁科技'
-                elif self.szstockid == '4527':
-                    data = u'方土霖'
-                elif self.szstockid == '8111':
-                    data = u'立碁電子'
-                elif self.szstockid == '6174':
-                    data = u'安碁科技'
-                else:
-                    data = text.strip().decode('BIG5')"""
-                
-                if self.szstockid == '4527':
-                    data = u'方土霖'
-                else:
-                    data = text.strip().decode('cp950')
-                    
+                #使用big5解碼,因為支援字型不夠,就需要加入以下的內容,若使用cp950解碼,只需加入網頁無法呈現的字型即可
+                data = text.strip().decode('cp950', 'ignore')
                 if self.bPrintDetail:
-                    print "公司名稱 :        " + data.encode('utf8')
+                    logger.debug('公司名稱 :    %s' % data.encode('utf8'))
                 self.stockdata.append(data)
                 self.bCompanyname = False            
 
@@ -228,42 +210,42 @@ class Parser_htm(SGMLParser):
                 #各營收資料
                 if self.nowrapcount == 1:
                     if self.bPrintDetail:
-                        print "當月營收 :        " + text.strip()
+                        logger.debug('當月營收:    %s'  % text.strip())
                     data = text.strip().replace(",", "")
                     self.stockdata.append(data)
                 elif self.nowrapcount == 2:
                     if self.bPrintDetail:
-                        print "上月營收 :        " + text.strip()
+                        logger.debug('上月營收 :    %s' % text.strip())
                     data = text.strip().replace(",", "")
                     self.stockdata.append(data)
                 elif self.nowrapcount == 3:
                     if self.bPrintDetail:
-                        print "去年當月營收 :     " + text.strip()
+                        logger.debug('去年當月營收 :    %s' % text.strip())
                     data = text.strip().replace(",", "")
                     self.stockdata.append(data)
                 elif self.nowrapcount == 4:
                     if self.bPrintDetail:
-                        print "上月比較增減(%) :  " + text.strip()
+                        logger.debug('上月比較增減(%%):    %s' % text.strip())
                     data = text.strip().replace(",", "")
                     self.stockdata.append(data)
                 elif self.nowrapcount == 5:
                     if self.bPrintDetail:
-                        print "去年同月增減(%) :  " + text.strip()
+                        logger.debug('去年同月增減(%%):    %s' % text.strip())
                     data = text.strip().replace(",", "")
                     self.stockdata.append(data)
                 elif self.nowrapcount == 6:
                     if self.bPrintDetail:
-                        print "當月累計營收 :     "  + text.strip()
+                        logger.debug('當月累計營收 :    %s' % text.strip())
                     data = text.strip().replace(",", "")
                     self.stockdata.append(data)
                 elif self.nowrapcount == 7:
                     if self.bPrintDetail:
-                        print "去年累計營收 :     " + text.strip()
+                        logger.debug('去年累計營收 :    %s' % text.strip())
                     data = text.strip().replace(",", "")
                     self.stockdata.append(data)
                 elif self.nowrapcount == 8:
                     if self.bPrintDetail:
-                        print "前期比較增減(%) :  " + text.strip() + "\n"
+                        logger.debug('前期比較增減(%%):    %s' % text.strip())
                     data = text.strip().replace(",", "")
                     self.stockdata.append(data)
                     self.totaldata.append(self.stockdata)
