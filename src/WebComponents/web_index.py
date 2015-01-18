@@ -11,6 +11,7 @@ import webapp2
 import cgi
 from datetime import datetime
 from Common import db_stock_price
+from StockInfoLoader import loader
 
 # WEB Tabs
 from WebComponents import web_news
@@ -71,7 +72,7 @@ def show_content_form():
 def show_content(stockName, selected_date):
     getStockPrice = "<br /> yahoo get_price() sample: [" + stockName + "] $"
     getStockPrice += str( db_stock_price.get_price(stockName, datetime.strptime(selected_date,'%Y-%m-%d')) )
-
+    loader.load_by_code(stockName)
     return getStockPrice
 
 
