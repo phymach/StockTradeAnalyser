@@ -88,10 +88,11 @@ logger = logging.getLogger('mopstwse')
 
 
 def get_historical_revenue(stock_type, start_date):
+    stock = None
     logger.debug('取得 %s %s全部公司營收資料' % (datetime.datetime.strftime(start_date, '%Y/%m'), stock_type))
     #營收網址
-    url = "http://mops.twse.com.tw/t21/" + stock_type + "/t21sc03_%s%s.html" % datetime.datetime.strftime(start_date, '%Y_%m')
-
+    url = "http://mops.twse.com.tw/t21/" + stock_type + "/t21sc03_%s_%s.html" % (start_date.year - 1911, start_date.month)
+    print url
     #解析網頁開始
     webcode = urllib.urlopen(url)
     if webcode.code == 200:

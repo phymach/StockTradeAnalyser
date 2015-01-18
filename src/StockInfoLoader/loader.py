@@ -32,22 +32,24 @@ def load_company_info(stock_type, start_date=datetime(2014, 01, 01)):
     
     for i in xrange(len(result.totaldata)):
         company_data = result.totaldata[i]
-
-        db_company_info(code                                = company_data[1].encode('utf8'),
-                        date_time                           = start_date,
-                        classification                      = company_data[0].encode('utf8'),
-                        company_name                        = company_data[2].encode('utf8'),
-                        month_revenue                       = company_data[3].encode('utf8'),
-                        last_month_revenue                  = company_data[4].encode('utf8'),
-                        month_revenue_last_year             = company_data[5].encode('utf8'),
-                        percent_month_revenue               = company_data[6].encode('utf8'),
-                        percent_month_revenue_last_year     = company_data[7].encode('utf8'),
-                        month_cumulative_revenue            = company_data[8].encode('utf8'),
-                        month_cumulative_revenue_last_year  = company_data[9].encode('utf8'),
-                        percent_month_cumulative_revenue    = company_data[10].encode('utf8'))
+        
+        print company_data
+        db_company_info.insert_info(code                                = company_data[1],
+                                    date_time                           = start_date,
+                                    classification                      = company_data[0],
+                                    company_name                        = company_data[2],
+                                    month_revenue                       = int(company_data[3]),
+                                    last_month_revenue                  = int(company_data[4]),
+                                    month_revenue_last_year             = int(company_data[5]),
+                                    percent_month_revenue               = float(company_data[6]),
+                                    percent_month_revenue_last_year     = float(company_data[7]),
+                                    month_cumulative_revenue            = int(company_data[8]),
+                                    month_cumulative_revenue_last_year  = int(company_data[9]),
+                                    percent_month_cumulative_revenue    = float(company_data[10]))
 
 def load_public_info():
-    continue
+    pass
     
 if __name__=="__main__":
+    #print load_company_info(stock_type='sii')
     print load_market_price("2330.tw")

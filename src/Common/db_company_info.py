@@ -1,3 +1,6 @@
+#!/usr/bin/python
+# -*- coding: utf-8 -*-
+
 '''
 Created on 2014/5/3
 
@@ -15,21 +18,26 @@ logging.basicConfig(level=logging.DEBUG, format='%(asctime)s %(message)s', datef
 logger = logging.getLogger('db_company_info')
 
 class CompanyInfo(db.Model):
-    code                                = db.StringProperty(required=True)
+    code                                = db.StringProperty(required=True)      #å…¬å¸ä»£è™Ÿ
     date_time                           = db.DateTimeProperty(required=True)
-    classification                      = db.StringProperty()                   #²£·~§O
-    company_name                        = db.StringProperty(required=True)
-    month_revenue                       = db.IntegerProperty()                  #·í¤ëÀç¦¬
-    last_month_revenue                  = db.IntegerProperty()                  #¤W¤ëÀç¦¬
-    month_revenue_last_year             = db.IntegerProperty()                  #¥h¦~·í¤ëÀç¦¬
-    percent_month_revenue               = db.FloatProperty()                    #¤W¤ë¤ñ¸û¼W´î(%)
-    percent_month_revenue_last_year     = db.FloatProperty()                    #¥h¦~¦P¤ë¼W´î(%)
-    month_cumulative_revenue            = db.IntegerProperty()                  #·í¤ë²Ö­pÀç¦¬
-    month_cumulative_revenue_last_year  = db.IntegerProperty()                  #¥h¦~²Ö­pÀç¦¬
-    percent_month_cumulative_revenue    = db.FloatProperty()                    #«e´Á¤ñ¸û¼W´î(%)
+    classification                      = db.StringProperty()                   #ç”¢æ¥­åˆ¥
+    company_name                        = db.StringProperty(required=True)      #å…¬å¸åç¨±
+    month_revenue                       = db.IntegerProperty()                  #ç•¶æœˆç‡Ÿæ”¶
+    last_month_revenue                  = db.IntegerProperty()                  #ä¸Šæœˆç‡Ÿæ”¶
+    month_revenue_last_year             = db.IntegerProperty()                  #å»å¹´ç•¶æœˆç‡Ÿæ”¶
+    percent_month_revenue               = db.FloatProperty()                    #ä¸Šæœˆæ¯”è¼ƒå¢æ¸›(%)
+    percent_month_revenue_last_year     = db.FloatProperty()                    #å»å¹´åŒæœˆå¢æ¸›(%)
+    month_cumulative_revenue            = db.IntegerProperty()                  #ç•¶æœˆç´¯è¨ˆç‡Ÿæ”¶
+    month_cumulative_revenue_last_year  = db.IntegerProperty()                  #å»å¹´ç´¯è¨ˆç‡Ÿæ”¶
+    percent_month_cumulative_revenue    = db.FloatProperty()                    #å‰æœŸæ¯”è¼ƒå¢æ¸›(%)
 
-def insert_info(code, date_time, company_name):
-    s = CompanyInfo(code=code, date_time=date_time, company_name=company_name)
+def insert_info(code, date_time, classification, company_name, month_revenue, last_month_revenue, month_revenue_last_year, percent_month_revenue, percent_month_revenue_last_year,
+                month_cumulative_revenue, month_cumulative_revenue_last_year, percent_month_cumulative_revenue):
+    s = CompanyInfo(code=code, date_time=date_time, classification=classification, company_name=company_name, 
+                    month_revenue=month_revenue, last_month_revenue=last_month_revenue, month_revenue_last_year=month_revenue_last_year,
+                    percent_month_revenue=percent_month_revenue, percent_month_revenue_last_year=percent_month_revenue_last_year,
+                    month_cumulative_revenue=month_cumulative_revenue, month_cumulative_revenue_last_year=month_cumulative_revenue_last_year, percent_month_cumulative_revenue=percent_month_cumulative_revenue)
+    
     logger.debug('[%s] Insert record:  code=%s, date_time=%s' % (inspect.getframeinfo(inspect.currentframe())[2], code, datetime.datetime.strftime(date_time,'%Y/%m/%d')))
     s.put()
     
