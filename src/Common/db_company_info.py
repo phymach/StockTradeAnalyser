@@ -17,6 +17,18 @@ from google.appengine.api import users
 logging.basicConfig(level=logging.DEBUG, format='%(asctime)s %(message)s', datefmt='%m/%d/%Y %I:%M:%S', filename='D:\\db_company_info.log')
 logger = logging.getLogger('db_company_info')
 
+def toInt(val):
+    try:
+        return(val)
+    except ValueError:
+        return 0
+
+def toFloat(val):
+    try:
+        return float(val)
+    except ValueError:
+        return 0.0
+
 class CompanyInfo(db.Model):
     code                                = db.StringProperty(required=True)      #公司代號
     date_time                           = db.DateTimeProperty(required=True)
@@ -34,9 +46,14 @@ class CompanyInfo(db.Model):
 def insert_info(code, date_time, classification, company_name, month_revenue, last_month_revenue, month_revenue_last_year, percent_month_revenue, percent_month_revenue_last_year,
                 month_cumulative_revenue, month_cumulative_revenue_last_year, percent_month_cumulative_revenue):
     s = CompanyInfo(code=code, date_time=date_time, classification=classification, company_name=company_name, 
-                    month_revenue=month_revenue, last_month_revenue=last_month_revenue, month_revenue_last_year=month_revenue_last_year,
-                    percent_month_revenue=percent_month_revenue, percent_month_revenue_last_year=percent_month_revenue_last_year,
-                    month_cumulative_revenue=month_cumulative_revenue, month_cumulative_revenue_last_year=month_cumulative_revenue_last_year, percent_month_cumulative_revenue=percent_month_cumulative_revenue)
+                    month_revenue=month_revenue,
+                    last_month_revenue=last_month_revenue,
+                    month_revenue_last_year=month_revenue_last_year,
+                    percent_month_revenue=toFloat(percent_month_revenue),
+                    percent_month_revenue_last_year=toFloat(percent_month_revenue_last_year),
+                    month_cumulative_revenue=month_cumulative_revenue,
+                    month_cumulative_revenue_last_year=month_cumulative_revenue_last_year,
+                    percent_month_cumulative_revenue=toFloat(percent_month_cumulative_revenue))
     
     logger.debug('[%s] Insert record:  code=%s, date_time=%s' % (inspect.getframeinfo(inspect.currentframe())[2], code, datetime.datetime.strftime(date_time,'%Y/%m/%d')))
     s.put()
