@@ -34,11 +34,13 @@ def update_module_time(module_name, last_update_time=datetime.datetime.now()):
         s.put()
     logger.debug('[%s] Update module: %s last update to: %s.' % (inspect.getframeinfo(inspect.currentframe())[2], module_name, datetime.datetime.strftime(last_update_time,'%Y/%m/%d')))
     
-def get_update_time(module_name, last_update_time):
+def get_update_time(module_name):
     q = db.Query(SystemStatus)
     q.filter('code =', module_name)
     result = q.get()
     if result:
         print result.last_update_time
         return result.last_update_time
+    else:
+        return datetime(2014, 01, 01)
 

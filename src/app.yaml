@@ -7,9 +7,13 @@ threadsafe: yes
 handlers:
 - url: /WebComponents
   static_dir: WebComponents
+
+- url: /StockInfoLoader
+  script: loader.app
   
 - url: .*
   script: main_stocktradeanalyser.app
+
 
 libraries:
 - name: webapp2

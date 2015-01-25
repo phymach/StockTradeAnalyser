@@ -5,14 +5,30 @@ Created on 2012/11/29
 '''
 
 import logging
+import webapp2
 from datetime import datetime
 from StockInfoLoader import ystockquote
 from StockInfoLoader import mopstwse
+from Common import db_sys_status
 from Common import db_stock_price
 from Common import db_company_info
 
 logging.basicConfig(level=logging.DEBUG, format='%(asctime)s %(message)s', datefmt='%m/%d/%Y %I:%M:%S', filename='D:\\loader.log')
 logger = logging.getLogger('loader')
+
+class MainPage(webapp2.RequestHandler):
+    
+    # GET
+    def get(self):
+        last_update_time = db_sys_status.get_update_time("MarketPrice")
+        load_market_price("2330.tw", start_date=last_update_time)
+        db_sys_status.update_module_time("MarketPrice", datetime.now())
+        self.response.write("[%s] Update 2330.tw to database successfully!" % datetime.strftime(datetime.now(), '%m/%d/%Y %I:%M:%S'))
+        
+    # POST
+    def post(self):
+        pass
+
 
 def load_market_price(stock_code, start_date=datetime(2014, 01, 01), end_date=datetime.now()):
     result = ystockquote.get_historical_prices(stock_code, datetime.strftime(start_date, '%Y%m%d'), datetime.strftime(end_date, '%Y%m%d'))
@@ -54,5 +70,8 @@ def load_public_info():
     pass
     
 if __name__=="__main__":
-    #print load_company_info(stock_type='sii')
-    print load_market_price("2330.tw")
+    pass
+#     print load_company_info(stock_type='sii')
+#     last_update_time = db_sys_status.get_update_time("MarketPrice")
+#     load_market_price("2330.tw", start_date=last_update_time)
+#     db_sys_status.update_module_time("MarketPrice", datetime.now())
