@@ -9,7 +9,7 @@ handlers:
   static_dir: WebComponents
 
 - url: /StockInfoLoader
-  script: loader.app
+  script: main_loader.app
   
 - url: .*
   script: main_stocktradeanalyser.app
