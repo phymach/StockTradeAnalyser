@@ -1,4 +1,4 @@
 cron:
 - description: stock Info loader
   url: /StockInfoLoader
-  schedule: every 1 mins
+  schedule: every 10 minutes

@@ -37,7 +37,7 @@ def update_module_time(module_name, last_update_time=datetime.datetime.now()):
 
 def get_update_time(module_name):
     q = db.Query(SystemStatus)
-    q.filter('code =', module_name)
+    q.filter('module_name =', module_name)
     result = q.get()
     if result:
         print result.last_update_time
