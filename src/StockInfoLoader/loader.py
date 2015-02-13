@@ -11,6 +11,7 @@ from StockInfoLoader import mopstwse
 from Common import db_sys_status
 from Common import db_stock_price
 from Common import db_company_info
+from Common import db_monthly_revenue
 
 logging.basicConfig(level=logging.DEBUG, format='%(asctime)s %(message)s', datefmt='%m/%d/%Y %I:%M:%S', filename='D:\\loader.log')
 logger = logging.getLogger('loader')
@@ -28,17 +29,16 @@ def load_market_price(stock_code, start_date=datetime(2014, 01, 01), end_date=da
                                     volume=int(record[5]))
     return result
     
-def load_company_info(stock_type, start_date=datetime(2014, 01, 01)):
+def load_monthly_revenue(stock_type, start_date=datetime(2014, 01, 01)):
     result = mopstwse.get_historical_revenue(stock_type, start_date)
         
     for i in xrange(len(result.totaldata)):
         company_data = result.totaldata[i]
             
         try:
-            db_company_info.insert_info(code=company_data[1],
-                                        date_time=start_date,
-                                        classification=company_data[0],
-                                        company_name=company_data[2],
+            db_company_info.insert_info(code=company_data[1], classification=company_data[0], company_name=company_data[2])
+            db_monthly_revenue.insert_info(code=company_data[1],
+                                        date_time=start_date,                                        
                                         month_revenue=int(company_data[3]),
                                         last_month_revenue=int(company_data[4]),
                                         month_revenue_last_year=int(company_data[5]),
@@ -51,7 +51,7 @@ def load_company_info(stock_type, start_date=datetime(2014, 01, 01)):
             print company_data
             raise
     
-def load_public_info():
+def load_company_info():
     pass
 
 

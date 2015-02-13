@@ -80,7 +80,7 @@ def main():
 
             #個股票網址
             url = "http://mops.twse.com.tw/mops/web/ajax_t51sb01?step=1&firstin=1&TYPEK=%s&code=%s" %(kindname, classno[0])
-
+            print url
             #解析網頁開始
             webcode = urllib.urlopen(url)
             if webcode.code == 200:

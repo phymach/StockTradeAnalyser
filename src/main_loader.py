@@ -22,9 +22,10 @@ class StockInfoLoad(webapp2.RequestHandler):
     # GET
     def get(self):
         last_update_time = db_sys_status.get_update_time("MarketPrice")
-        loader.load_market_price("2330.tw", start_date=last_update_time)
-        db_sys_status.update_module_time("MarketPrice", datetime.now())
-        self.response.write("[%s] Update 2330.tw to database successfully!" % datetime.strftime(datetime.now(), '%m/%d/%Y %I:%M:%S'))
+        current_time = datetime.now()
+        loader.load_market_price("2330.tw", start_date=last_update_time, end_date=current_time)
+        db_sys_status.update_module_time("MarketPrice", current_time)
+        self.response.write("[%s] Update 2330.tw to database successfully!" % datetime.strftime(current_time, '%m/%d/%Y %I:%M:%S'))
     # POST
     def post(self):
         pass

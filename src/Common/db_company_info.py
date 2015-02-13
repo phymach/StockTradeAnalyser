@@ -30,38 +30,21 @@ def toFloat(val):
         return 0.0
 
 class CompanyInfo(db.Model):
-    code                                = db.StringProperty(required=True)      #公司代號
-    date_time                           = db.DateTimeProperty(required=True)
-    classification                      = db.StringProperty()                   #產業別
-    company_name                        = db.StringProperty(required=True)      #公司名稱
-    month_revenue                       = db.IntegerProperty()                  #當月營收
-    last_month_revenue                  = db.IntegerProperty()                  #上月營收
-    month_revenue_last_year             = db.IntegerProperty()                  #去年當月營收
-    percent_month_revenue               = db.FloatProperty()                    #上月比較增減(%)
-    percent_month_revenue_last_year     = db.FloatProperty()                    #去年同月增減(%)
-    month_cumulative_revenue            = db.IntegerProperty()                  #當月累計營收
-    month_cumulative_revenue_last_year  = db.IntegerProperty()                  #去年累計營收
-    percent_month_cumulative_revenue    = db.FloatProperty()                    #前期比較增減(%)
+    code               = db.StringProperty(required=True)      #公司代號
+    date_time          = db.DateTimeProperty(required=True)
+    market_type        = db.StringProperty()                   # sii, otc
+    classification     = db.StringProperty()                   #產業別
+    company_name       = db.StringProperty(required=True)      #公司名稱
 
-def insert_info(code, date_time, classification, company_name, month_revenue, last_month_revenue, month_revenue_last_year, percent_month_revenue, percent_month_revenue_last_year,
-                month_cumulative_revenue, month_cumulative_revenue_last_year, percent_month_cumulative_revenue):
-    s = CompanyInfo(code=code, date_time=date_time, classification=classification, company_name=company_name, 
-                    month_revenue=month_revenue,
-                    last_month_revenue=last_month_revenue,
-                    month_revenue_last_year=month_revenue_last_year,
-                    percent_month_revenue=toFloat(percent_month_revenue),
-                    percent_month_revenue_last_year=toFloat(percent_month_revenue_last_year),
-                    month_cumulative_revenue=month_cumulative_revenue,
-                    month_cumulative_revenue_last_year=month_cumulative_revenue_last_year,
-                    percent_month_cumulative_revenue=toFloat(percent_month_cumulative_revenue))
+def insert_info(code, classification, company_name):
+    s = CompanyInfo(code=code, classification=classification, company_name=company_name)
     
-    logger.debug('[%s] Insert record:  code=%s, date_time=%s' % (inspect.getframeinfo(inspect.currentframe())[2], code, datetime.datetime.strftime(date_time,'%Y/%m/%d')))
+    logger.debug('[%s] Insert record:  code=%s, date_time=%s' % (inspect.getframeinfo(inspect.currentframe())[2], code))
     s.put()
     
 def get_info(code, date_time):
     q = db.Query(CompanyInfo)
     q.filter('code =', code)
-    q.filter('date_time =', date_time)
 
     result = q.get()
     if result:
