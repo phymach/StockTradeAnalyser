@@ -9,53 +9,41 @@
 #   Python version : 2.7.2
 #---------------------------------------------
     
-import csv, time, urllib, codecs
+import urllib
 from sgmllib import SGMLParser
     
-def get_historical_revenue(market_type="sii"):
+def get_info(market_type, class_no):
     company_list = []
-    count = 0
-    
-    with open('stock_type_list.csv') as csvfile:
-        reader = csv.DictReader(csvfile)
-        for row in reader:
-            #個股票網址
-            url = "http://mops.twse.com.tw/mops/web/ajax_t51sb01?step=1&firstin=1&TYPEK=%s&code=%s" % (market_type, row['no'])
-            print url
-            #解析網頁開始
-            webcode = urllib.urlopen(url)
-            if webcode.code == 200:
-                stock = ParseWebData()
-                stock.parse(webcode.read())
-                webcode.close()
-                stock.close()
-                 
-                if stock.webexist:
-                    print market_type + " " + row['no'] + " " + row['class'] + " web parser OK......"
-                else:
-                    print market_type + " " + row['no'] + " " + row['class'] + " not exist......"
-                    continue;
 
+    #個股票網址
+    url = "http://mops.twse.com.tw/mops/web/ajax_t51sb01?step=1&firstin=1&TYPEK=%s&code=%s" % (market_type, class_no)
+    #解析網頁開始
+    webcode = urllib.urlopen(url)
 
-                for j in range(0, len(stock.stockid)):
-                    company_info = CompanyInfo()
-                    company_info.code                   = stock.stockid[j]
-                    company_info.classification         = row['class']
-                    company_info.company_name           = stock.stockcompanyname[j]
-                    company_info.company_address        = stock.stockcompanyaddress[j]
-                    company_info.company_tel            = stock.stockcompanytel[j]
-                    company_info.company_open_date      = stock.stockcompanyopendate[j]
-                    company_info.company_listing_date   = stock.stockcompanylistingdate[j]
-                    company_info.company_capital        = stock.stockcompanycapital[j]
-                    
-                    #company_info.print_info()
-                    company_list.append(company_info)
-
-                count += 1
-
-            if(count%6) == 0:
-                time.sleep(10)
+    if webcode.code == 200:
+        stock = ParseWebData()
+        stock.parse(webcode.read())
+        webcode.close()
+        stock.close()
+         
+        if stock.webexist:
+            print market_type + " " + class_no + " web parser OK......"
+            
+            for j in range(0, len(stock.stockid)):
+                company_info = CompanyInfo()
+                company_info.code                   = stock.stockid[j]
+                company_info.company_name           = stock.stockcompanyname[j]
+                company_info.company_address        = stock.stockcompanyaddress[j]
+                company_info.company_tel            = stock.stockcompanytel[j]
+                company_info.company_open_date      = stock.stockcompanyopendate[j]
+                company_info.company_listing_date   = stock.stockcompanylistingdate[j]
+                company_info.company_capital        = stock.stockcompanycapital[j]
                 
+                #company_info.print_info()
+                company_list.append(company_info)
+        else:
+            print market_type + " " + class_no + " not exist......"
+
     return company_list
 
 class CompanyInfo():
@@ -70,14 +58,7 @@ class CompanyInfo():
         self.company_capital        = ""
         
     def print_info(self):
-        print self.code
-        print self.classification
-        print self.company_name
-        print self.company_address
-        print self.company_tel
-        print self.company_open_date
-        print self.company_listing_date
-        print self.company_capital
+        print self.code + ", " + self.classification + ", " + self.company_name + ", " + self.company_address + ", " + self.company_tel + ", " + self.company_open_date + ", " + self.company_listing_date + ", " + self.company_capital
 
 
 class ParseWebData(SGMLParser):
@@ -163,4 +144,4 @@ class ParseWebData(SGMLParser):
                 self.styleflag = False 
 
 if __name__ == "__main__":
-    get_historical_revenue()
+    get_info()

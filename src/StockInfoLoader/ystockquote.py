@@ -157,7 +157,12 @@ def get_historical_prices(symbol, start_date, end_date):
           'b=%s&' % str(int(start_date[6:8])) + \
           'c=%s&' % str(int(start_date[0:4])) + \
           'ignore=.csv'
-    days = urllib.urlopen(url).readlines()
-    data = [day[:-2].split(',') for day in days]
+
+    webcode = urllib.urlopen(url)
+    if webcode.code == 200:
+        days = webcode.readlines()
+        data = [day[:-2].split(',') for day in days]
+    else:
+        data = []
     return data
 

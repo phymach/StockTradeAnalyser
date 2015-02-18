@@ -30,6 +30,25 @@ def insert_price(code, date_time, open_price, high_price, low_price, close_price
                price_change=price_change, volume=volume)
     logger.debug('[%s] Insert record:  code=%s, date_time=%s' % (inspect.getframeinfo(inspect.currentframe())[2], code, datetime.datetime.strftime(date_time,'%Y/%m/%d')))
     s.put()
+
+def update_price(code, date_time, open_price, high_price, low_price, close_price, price_change, volume):
+    q = db.Query(StockPrice)
+    q.filter('code =', code)
+    q.filter('date_time =', date_time)
+    result = q.get()
+    
+    if result:
+        logger.debug('[%s] Update record:  code=%s, date_time=%s' % (inspect.getframeinfo(inspect.currentframe())[2], code, datetime.datetime.strftime(date_time,'%Y/%m/%d')))
+        setattr(result, 'open_price', open_price)
+        setattr(result, 'high_price', high_price)
+        setattr(result, 'low_price', low_price)
+        setattr(result, 'close_price', close_price)
+        setattr(result, 'price_change', price_change)
+        setattr(result, 'volume', volume)
+        result.put()
+    else:
+        insert_price(code, date_time, open_price, high_price, low_price, close_price, price_change, volume)
+        
     
 def get_price(code, date_time):
     q = db.Query(StockPrice)

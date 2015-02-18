@@ -56,7 +56,7 @@ class MainPage(webapp2.RequestHandler):
 
 
 # loader.load_market_price("2330.tw")
-loader.load_company_info('sii')
+#loader.load_company_info('sii')
 app = webapp2.WSGIApplication([('/', MainPage)], debug=True)
 
 

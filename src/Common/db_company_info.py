@@ -45,14 +45,44 @@ def insert_info(code, market_type, classification, company_name, company_address
     s = CompanyInfo(code=code, market_type=market_type, classification=classification,
                     company_name=company_name, company_address=company_address, company_tel=company_tel,
                     company_open_date=company_open_date, company_listing_date=company_listing_date, company_capital=company_capital)
-    logger.debug('[%s] Insert record:  code=%s, date_time=%s' % (inspect.getframeinfo(inspect.currentframe())[2], code))
+    logger.debug('[%s] Insert record:  code=%s' % (inspect.getframeinfo(inspect.currentframe())[2], code))
     s.put()
+
+def update_info(code, market_type, classification, company_name, company_address, company_tel,
+                company_open_date, company_listing_date, company_capital):
+    q = db.Query(CompanyInfo)
+    q.filter('code =', code)
+    result = q.get()
     
+    if result:
+        logger.debug('[%s] Update record:  code=%s' % (inspect.getframeinfo(inspect.currentframe())[2], code))
+        setattr(result, 'market_type', market_type)
+        setattr(result, 'classification', classification)
+        setattr(result, 'company_name', company_name)
+        setattr(result, 'company_address', company_address)
+        setattr(result, 'company_tel', company_tel)
+        setattr(result, 'company_open_date', company_open_date)
+        setattr(result, 'company_listing_date', company_listing_date)
+        setattr(result, 'company_capital', company_capital)
+        result.put()
+    else:
+        insert_info(code, market_type, classification, company_name, company_address, company_tel,
+                company_open_date, company_listing_date, company_capital)
+
 def get_info(code):
     q = db.Query(CompanyInfo)
     q.filter('code =', code)
 
     result = q.get()
     if result:
-        print result.company_name
-        return result.company_name
+        return result
+    
+def get_code_list():
+    code_list = []
+    result = CompanyInfo.all()
+    result.order("code")
+    
+    for i in result:
+        code_list.append(i.code)
+
+    return code_list
