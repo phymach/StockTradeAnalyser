@@ -30,19 +30,25 @@ def toFloat(val):
         return 0.0
 
 class CompanyInfo(db.Model):
-    code               = db.StringProperty(required=True)      #公司代號
-    date_time          = db.DateTimeProperty(required=True)
-    market_type        = db.StringProperty()                   # sii, otc
-    classification     = db.StringProperty()                   #產業別
-    company_name       = db.StringProperty(required=True)      #公司名稱
+    code                    = db.StringProperty(required=True)      #公司代號
+    market_type             = db.StringProperty(required=True)      #產業分類名稱  sii, otc
+    classification          = db.StringProperty(required=True)      #產業別
+    company_name            = db.StringProperty(required=True)      #公司名稱
+    company_address         = db.StringProperty()                   #公司地址
+    company_tel             = db.StringProperty()                   #公司電話
+    company_open_date       = db.StringProperty()                   #公司成立日
+    company_listing_date    = db.StringProperty()                   #公司上市上櫃日
+    company_capital         = db.StringProperty()                   #公司資本額
 
-def insert_info(code, classification, company_name):
-    s = CompanyInfo(code=code, classification=classification, company_name=company_name)
-    
+def insert_info(code, market_type, classification, company_name, company_address, company_tel,
+                company_open_date, company_listing_date, company_capital):
+    s = CompanyInfo(code=code, market_type=market_type, classification=classification,
+                    company_name=company_name, company_address=company_address, company_tel=company_tel,
+                    company_open_date=company_open_date, company_listing_date=company_listing_date, company_capital=company_capital)
     logger.debug('[%s] Insert record:  code=%s, date_time=%s' % (inspect.getframeinfo(inspect.currentframe())[2], code))
     s.put()
     
-def get_info(code, date_time):
+def get_info(code):
     q = db.Query(CompanyInfo)
     q.filter('code =', code)
 

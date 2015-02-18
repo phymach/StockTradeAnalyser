@@ -8,9 +8,15 @@ handlers:
 - url: /WebComponents
   static_dir: WebComponents
 
-- url: /StockInfoLoader
+- url: /LoadMarketPrice
   script: main_loader.app
-  
+
+- url: /LoadMonthlyRevenue
+  script: main_loader.app
+
+- url: /LoadCompanyInfo
+  script: main_loader.app
+
 - url: .*
   script: main_stocktradeanalyser.app
 

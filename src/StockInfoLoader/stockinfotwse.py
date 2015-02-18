@@ -9,77 +9,18 @@
 #   Python version : 2.7.2
 #---------------------------------------------
     
-import csv, time, codecs, urllib, os
+import csv, time, urllib, codecs
 from sgmllib import SGMLParser
     
-def main():
-    stockkind = ["sii", "otc"]
-    stocktype = [u"上市", u"上櫃"]
-    stocknoclass = ({ "01": u"水泥工業",
-                      "02": u"食品工業",
-                      "03": u"塑膠工業",
-                      "04": u"紡織纖維",
-                      "05": u"電機機械",
-                      "06": u"電器電纜",
-                      "07": u"化學生技醫療",
-                      "08": u"玻璃陶瓷",
-                      "09": u"造紙工業",
-                      "10": u"鋼鐵工業",
-                      "11": u"橡膠工業",
-                      "12": u"汽車工業",
-                      "13": u"電子工業",
-                      "14": u"建材營造",
-                      "15": u"航運業",
-                      "16": u"觀光事業",
-                      "17": u"金融保險業",
-                      "18": u"貿易百貨",
-                      "19": u"綜合企業",
-                      "20": u"其他",
-                      "21": u"化學工業",
-                      "22": u"生技醫療業",
-                      "23": u"油電燃氣業",
-                      "24": u"半導體業",
-                      "25": u"電腦及週邊設備業",
-                      "26": u"光電業",
-                      "27": u"通信網路業",
-                      "28": u"電子零組件業",
-                      "29": u"電子通路業",
-                      "30": u"資訊服務業",
-                      "31": u"其他電子業",
-                      "91": u"存託憑證"})
-     
-    #指定儲存的路徑,可自行變更儲存路徑
-    workdir = 'D:\\stock_database\\'
-
-    if not os.path.isdir(workdir):
-        os.makedirs(workdir)
-
-    savefile = workdir + 'stockinfo.csv'
-
-    #開始寫入檔案準備
-    writefile = file(savefile, 'wb')
-
-    #指定檔案以UTF8儲存
-    writefile.write(codecs.BOM_UTF8)
-
-    #指定CSV檔分隔的方式
-    writer = csv.writer(writefile, delimiter=',', quotechar='"', quoting=csv.QUOTE_ALL)
-
-    #寫入欄位說明
-    writer.writerow([u'股票代號'.encode('utf8'), u'股票種類'.encode('utf8'), u'產業分類編號'.encode('utf8'), \
-                     u'產業分類名稱'.encode('utf8'), u'公司名稱'.encode('utf8'), u'公司資本額'.encode('utf8'),\
-                     u'公司地址'.encode('utf8'), u'公司電話'.encode('utf8'), u'公司開幕日'.encode('utf8'), \
-                     u'公司上市上櫃日'.encode('utf8')])
-     
-    for i in range(0, len(stockkind)):
-        kindname = stockkind[i]
-        cstocktype= stocktype[i]       
-
-        count = 0
-        for classno in sorted(stocknoclass.items(), key=lambda stocknoclass:stocknoclass[0], reverse = False):
-
+def get_historical_revenue(market_type="sii"):
+    company_list = []
+    count = 0
+    
+    with open('stock_type_list.csv') as csvfile:
+        reader = csv.DictReader(csvfile)
+        for row in reader:
             #個股票網址
-            url = "http://mops.twse.com.tw/mops/web/ajax_t51sb01?step=1&firstin=1&TYPEK=%s&code=%s" %(kindname, classno[0])
+            url = "http://mops.twse.com.tw/mops/web/ajax_t51sb01?step=1&firstin=1&TYPEK=%s&code=%s" % (market_type, row['no'])
             print url
             #解析網頁開始
             webcode = urllib.urlopen(url)
@@ -90,44 +31,60 @@ def main():
                 stock.close()
                  
                 if stock.webexist:
-                    print kindname + " " + classno[0] + " " + classno[1] + " web parser OK......"
+                    print market_type + " " + row['no'] + " " + row['class'] + " web parser OK......"
                 else:
-                    print kindname + " " + classno[0] + " " + classno[1] + " not exist......"
+                    print market_type + " " + row['no'] + " " + row['class'] + " not exist......"
                     continue;
 
 
                 for j in range(0, len(stock.stockid)):
-                     
-                    #處理中文編碼
-                    stockid = unicode(stock.stockid[j],"utf-8")
-                    companyname = unicode(stock.stockcompanyname[j],"utf-8")
-                    companyaddress = unicode(stock.stockcompanyaddress[j],"utf-8")
-                    companytel = unicode(stock.stockcompanytel[j],"utf-8")
-                    companyopendate = unicode(stock.stockcompanyopendate[j],"utf-8")
-                    companylistingdate = unicode(stock.stockcompanylistingdate[j],"utf-8")
-                    companycapital = unicode(stock.stockcompanycapital[j],"utf-8")
+                    company_info = CompanyInfo()
+                    company_info.code                   = stock.stockid[j]
+                    company_info.classification         = row['class']
+                    company_info.company_name           = stock.stockcompanyname[j]
+                    company_info.company_address        = stock.stockcompanyaddress[j]
+                    company_info.company_tel            = stock.stockcompanytel[j]
+                    company_info.company_open_date      = stock.stockcompanyopendate[j]
+                    company_info.company_listing_date   = stock.stockcompanylistingdate[j]
+                    company_info.company_capital        = stock.stockcompanycapital[j]
+                    
+                    #company_info.print_info()
+                    company_list.append(company_info)
 
-                    #寫入股票資料
-                    writer.writerow([ '%s' %stockid.encode('utf8'), '%s' %cstocktype.encode('utf8'), '%s' %classno[0].encode('utf8'),\
-                                      '%s' %classno[1].encode('utf8'), '%s' %companyname.encode('utf8'), '%s' %companycapital.encode('utf8'),\
-                                      '%s' %companyaddress.encode('utf8'), '%s' %companytel.encode('utf8'), '%s' %companylistingdate.encode('utf8'), \
-                                      '%s' %companyopendate.encode('utf8')])
                 count += 1
-                print kindname + " " + classno[0] + " " + classno[1] + " data write to csv OK......\n"
 
             if(count%6) == 0:
                 time.sleep(10)
-                 
-    #關閉檔案           
-    writefile.close()
+                
+    return company_list
+
+class CompanyInfo():
+    def __init__(self):
+        self.code                   = ""
+        self.classification         = ""
+        self.company_name           = ""
+        self.company_address        = ""
+        self.company_tel            = ""
+        self.company_open_date      = ""
+        self.company_listing_date   = ""
+        self.company_capital        = ""
+        
+    def print_info(self):
+        print self.code
+        print self.classification
+        print self.company_name
+        print self.company_address
+        print self.company_tel
+        print self.company_open_date
+        print self.company_listing_date
+        print self.company_capital
+
 
 class ParseWebData(SGMLParser):
 
-    #初始化class等同constructor
     def __init__(self):
         SGMLParser.__init__(self)
 
-    #初始化變數數值
     def reset(self):
         SGMLParser.reset(self)
         self.webexist = False
@@ -143,22 +100,27 @@ class ParseWebData(SGMLParser):
         self.stockcompanycapital = []
         self.stockid = []
 
-         
     def parse(self,data):
         self.feed(data)
         self.close()
-         
+ 
     def start_table(self, attrs):
         if attrs[0][0] == 'class' and attrs[0][1] == 'noBorder':
             self.webexist = True                 
-                     
+
+    def start_tr(self, attrs):
+        self.nowrapflag = False
+        self.nowrapcount = 0
+        self.styleflag = False
+        self.stylecount = 0
+
     def start_td(self, attrs):
         for name, value in attrs:
             if len(attrs) == 1:
                 if name == 'nowrap':
                     self.nowrapflag = True
                     self.nowrapcount += 1                       
-                             
+                
             elif len(attrs) == 2:
                 #print len(attrs)
                 if name == 'style':
@@ -181,10 +143,7 @@ class ParseWebData(SGMLParser):
                 self.stockcompanylistingdate.append(text)
                 #print "listingdate : " + text
                 self.nowrapflag = False
-            elif self.nowrapcount == 10:
-                self.nowrapcount = 0
-                self.nowrapflag = False
-             
+
         if self.styleflag :
             if self.stylecount == 1:
                 self.stockcompanyname.append(text)
@@ -201,10 +160,7 @@ class ParseWebData(SGMLParser):
             elif self.stylecount == 5:
                 self.stockcompanycapital.append(text.strip().replace(",", ""))
                 #print "capital : " + text.strip().replace(",", "")
-                self.styleflag = False
-            elif self.stylecount == 14:
-                self.stylecount = 0
-                self.styleflag = False   
+                self.styleflag = False 
 
 if __name__ == "__main__":
-    main()
+    get_historical_revenue()
