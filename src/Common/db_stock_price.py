@@ -50,30 +50,15 @@ def update_price(code, date_time, open_price, high_price, low_price, close_price
         insert_price(code, date_time, open_price, high_price, low_price, close_price, price_change, volume)
         
     
-def get_price(code, date_time):
+def get_price(code, start_date, end_date):
     q = db.Query(StockPrice)
     q.filter('code =', code)
-    q.filter('date_time =', date_time)
+    q.filter('date_time >=', start_date)
+    q.filter('date_time <=', end_date)
     #q.ancestor(ancestor_key)
     #q.order('-date')
     #for record in q.run(limit=5):
     #    print record.close_price
     result = q.get()
     if result:
-        print result.close_price
-        return result.close_price
-
-#class Employee(db.Model):
-#    name = db.StringProperty(required=True)
-#    role = db.StringProperty(required=True,
-#                           choices=set(["executive", "manager", "producer"]))
-#    hire_date = db.DateProperty()
-#    new_hire_training_completed = db.BooleanProperty(indexed=False)
-#    email = db.StringProperty()
-
-
-# e = Employee(name="John",
-#             role="manager",
-#             email=users.get_current_user().email())
-# e.hire_date = datetime.datetime.now().date()
-# e.put()
+        return result

@@ -10,7 +10,6 @@ from datetime import datetime
 from google.appengine.ext.webapp.util import run_wsgi_app
 from Common import db_stock_price
 from StockInfoLoader import ystockquote
-from StockInfoLoader import loader
 from WebComponents import web_index
 
 
@@ -55,8 +54,7 @@ class MainPage(webapp2.RequestHandler):
 
 
 
-# loader.load_market_price("2330.tw")
-#loader.load_company_info('sii')
+
 app = webapp2.WSGIApplication([('/', MainPage)], debug=True)
 
 
