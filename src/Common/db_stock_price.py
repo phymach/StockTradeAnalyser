@@ -59,6 +59,6 @@ def get_price(code, start_date, end_date):
     #q.order('-date')
     #for record in q.run(limit=5):
     #    print record.close_price
-    result = q.get()
+    result = q.fetch(limit=None)
     if result:
         return result
