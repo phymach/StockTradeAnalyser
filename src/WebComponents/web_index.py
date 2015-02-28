@@ -50,22 +50,22 @@ def show_header():
     return header
 
 
-# CONTENT
-MAIN_PAGE_CONTENT_FORM = """\
-    
-    <div class='style_headline'>Hello, welcome to StockTradeAnalyser!</div>
-        <form>
-          Stock ID:<input value="2330.tw" name="sname">
-          , Date:<input type="date" name="sdate" id="sdate" value="2014-01-01">
-          , post-type:<input value="web" name="type">
-          <input type="submit" value="submit">
-        </form>
-    
-        <!--<a href="http://tw.yahoo.com">Yahoo! TW</a>-->
-    """ 
+
 
 def show_content_form():
-
+    # CONTENT
+    MAIN_PAGE_CONTENT_FORM = """\
+        
+        <div class='style_headline'>Hello, welcome to StockTradeAnalyser!</div>
+            <form>
+              Stock ID:<input value="2330.tw" name="sname">
+              , Date:<input type="date" name="sdate" id="sdate" value="2014-01-01">
+              , post-type:<input value="web" name="type">
+              <input type="submit" value="submit">
+            </form>
+        
+            <!--<a href="http://tw.yahoo.com">Yahoo! TW</a>-->
+        """ 
     return MAIN_PAGE_CONTENT_FORM
        
 def show_content(stockName, selected_date):
@@ -75,17 +75,17 @@ def show_content(stockName, selected_date):
     return getStockPrice
 
 
-# FOOTER
-MAIN_PAGE_FOOTER_TEMPLATE = """\
-        </div>
-        <div class="style_footer">
-            <div id='footer_CopyRight'>©2014 All Right Reserved.</div>
-        </div>
-        </div>
-      </body>
-    </html>
-    """
-def show_footer():
 
+def show_footer():
+    # FOOTER
+    MAIN_PAGE_FOOTER_TEMPLATE = """\
+            </div>
+            <div class="style_footer">
+                <div id='footer_CopyRight'>©2014 All Right Reserved.</div>
+            </div>
+            </div>
+          </body>
+        </html>
+        """
     return MAIN_PAGE_FOOTER_TEMPLATE
     

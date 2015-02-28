@@ -44,10 +44,10 @@ class LoadMarketPrice(webapp2.RequestHandler):
                                             close_price=float(record[4]),
                                             price_change=0.0,
                                             volume=int(record[5]))
-                self.response.write("%s %s\n" % (datetime.strptime(record[0], '%Y-%m-%d'), stock_code))
+                logger.debug("Insert record date=%s, code=%s into db_stock_price" % (datetime.strptime(record[0], '%Y-%m-%d'), stock_code))
                 
             db_sys_status.update_module_time("StockPrice", current_time)
-        self.response.write("[%s] Update MarketPrice to database successfully!\n" % datetime.strftime(current_time, '%m/%d/%Y %I:%M:%S'))
+        self.response.write("[%s] Update MarketPrice to database successfully!<br>" % datetime.strftime(current_time, '%m/%d/%Y %I:%M:%S'))
     # POST
     def post(self):
         pass
@@ -81,7 +81,7 @@ class LoadMonthlyRevenue(webapp2.RequestHandler):
                 raise
 
         db_sys_status.update_module_time("MonthlyRevenue", current_time)
-        self.response.write("[%s] Update MonthlyRevenue to database successfully!\n" % datetime.strftime(current_time, '%m/%d/%Y %I:%M:%S'))
+        self.response.write("[%s] Update MonthlyRevenue to database successfully!<br>" % datetime.strftime(current_time, '%m/%d/%Y %I:%M:%S'))
     # POST
     def post(self):
         pass
@@ -114,7 +114,7 @@ class LoadCompanyInfo(webapp2.RequestHandler):
                         logger.debug("Insert data %s:%s into db_company_info" % (market_type[i], info.code))
             
         db_sys_status.update_module_time("CompanyInfo", current_time)
-        self.response.write("[%s] Update CompanyInfo to database successfully!\n" % datetime.strftime(current_time, '%m/%d/%Y %I:%M:%S'))
+        self.response.write("[%s] Update CompanyInfo to database successfully!<br>" % datetime.strftime(current_time, '%m/%d/%Y %I:%M:%S'))
     # POST
     def post(self):
         pass
@@ -123,7 +123,7 @@ class LoadCompanyInfo(webapp2.RequestHandler):
 # loader.load_market_price("2330.tw")
 # loader.load_company_info('sii')
 
-app = webapp2.WSGIApplication([('/LoadMonthlyRevenue', LoadMonthlyRevenue)], debug=True)
-app = webapp2.WSGIApplication([('/LoadCompanyInfo', LoadCompanyInfo)], debug=True)
-app = webapp2.WSGIApplication([('/LoadMarketPrice', LoadMarketPrice)], debug=True)
+app = webapp2.WSGIApplication([('/LoadMonthlyRevenue', LoadMonthlyRevenue),
+                               ('/LoadCompanyInfo', LoadCompanyInfo),
+                               ('/LoadMarketPrice', LoadMarketPrice)], debug=True)
 

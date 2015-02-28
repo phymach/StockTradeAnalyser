@@ -6,11 +6,12 @@
 
 import webapp2
 import cgi
+import cStringIO
 from datetime import datetime
 from google.appengine.ext.webapp.util import run_wsgi_app
 from Common import db_stock_price
-from StockInfoLoader import ystockquote
 from WebComponents import web_index
+from WebComponents import web_stock_candlechart
 
 
 class MainPage(webapp2.RequestHandler):
@@ -40,7 +41,21 @@ class MainPage(webapp2.RequestHandler):
             
         elif self.request.get('type') == "app":
             self.response.write("app")
+        
+        elif self.request.get('type') == "candlechart":
+            code = self.request.get('code')
+            start_date = datetime.strptime(self.request.get('start_date'), "%Y-%m-%d")
+            end_date = datetime.strptime(self.request.get('end_date'), "%Y-%m-%d")
+
+            record_text = []
+            for record in db_stock_price.get_price(code, start_date=start_date, end_date=end_date):
+                record_text.append([record.date_time.strftime("%m/%d"), record.low_price, record.open_price, record.close_price, record.high_price])
+            output = cStringIO.StringIO()
+            print >>output, record_text
+            contents = output.getvalue()
+            #print contents
             
+            self.response.write(web_stock_candlechart.show_html(contents))
         else:
             self.response.write("Please specify a type!!<br />")
             self.response.write("<form>post-type:<input value='web' name='type'><input type='submit' value='submit'></form>")

@@ -10,3 +10,9 @@
 import webapp2
 import cgi
 from datetime import datetime
+
+
+
+MAIN_PAGE_FOOTER_TEMPLATE = """<div class="style_footer">
+                                    <div id='footer_CopyRight'>©2014 All Right Reserved.</div>
+                               </div>"""

@@ -17,9 +17,6 @@ handlers:
 - url: /LoadCompanyInfo
   script: main_loader.app
 
-- url: /Finance
-  script: main_financechart.app
-
 - url: .*
   script: main_stocktradeanalyser.app
 
