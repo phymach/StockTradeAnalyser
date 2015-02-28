@@ -20,21 +20,10 @@ class MainPage(webapp2.RequestHandler):
     def get(self):
 
         if self.request.get('type') == "web":
-            #self.response.write(web_index.ini(sname, sdate))
-            self.response.write(web_index.show_header())
-            self.response.write(web_index.show_content_form())
-                
-            if self.request.get('sname') != "":
-                stockName = self.request.get('sname')
-                selected_date = self.request.get('sdate')
-                self.response.write(web_index.show_content(stockName, selected_date))
-                #self.response.out.write('<br /> yahoo get_price() sample: [' + stockName + '] $')
-                #self.response.write(ystockquote.get_price(stockName))
-                #self.response.write(db_stock_price.get_price(stockName, datetime.strptime(selected_date,'%Y-%m-%d')))
-            else:
-                self.response.write("wait for input!!")
-                
-            self.response.write(web_index.show_footer())
+            stockName = self.request.get('sname')
+            selected_date = self.request.get('sdate')
+            
+            self.response.write(web_index.show_html(stockName, selected_date))
             
         elif self.request.get('type') == "data":
             self.response.write("data")

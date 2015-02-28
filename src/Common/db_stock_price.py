@@ -50,7 +50,7 @@ def update_price(code, date_time, open_price, high_price, low_price, close_price
         insert_price(code, date_time, open_price, high_price, low_price, close_price, price_change, volume)
         
     
-def get_price(code, start_date, end_date=datetime.datetime.now()):
+def get_price(code, start_date, end_date):
     q = db.Query(StockPrice)
     q.filter('code =', code)
     q.filter('date_time >=', start_date)
