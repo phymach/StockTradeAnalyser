@@ -18,7 +18,6 @@ class MainPage(webapp2.RequestHandler):
     
     # GET
     def get(self):
-
         if self.request.get('type') == "web":
             stockName = self.request.get('sname')
             selected_date = self.request.get('sdate')
