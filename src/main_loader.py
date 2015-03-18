@@ -20,9 +20,8 @@ from StockInfoLoader import ystockquote
 from StockInfoLoader import mopstwse
 from StockInfoLoader import stockinfotwse
 
-logging.basicConfig(level=logging.DEBUG, format='%(asctime)s %(message)s', datefmt='%m/%d/%Y %I:%M:%S', filename='D:\\main_loader.log')
-logger = logging.getLogger('loader')
-
+logging.basicConfig(level=logging.DEBUG, disable_existing_loggers=False, format='%(asctime)s %(levelname)s %(message)s', datefmt='%m/%d/%Y %I:%M:%S')
+logger = logging.getLogger(__name__)
 
 class LoadMarketPrice(webapp2.RequestHandler):
     

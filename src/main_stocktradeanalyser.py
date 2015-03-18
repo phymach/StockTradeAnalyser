@@ -5,7 +5,7 @@
 #############################################################
 
 import webapp2
-import cgi
+import cgi, logging
 import cStringIO
 from datetime import datetime
 from google.appengine.ext.webapp.util import run_wsgi_app
@@ -13,6 +13,8 @@ from Common import db_stock_price
 from WebComponents import web_index
 from WebComponents import web_stock_candlechart
 
+logging.basicConfig(level=logging.DEBUG, disable_existing_loggers=False, format='%(asctime)s %(levelname)s %(message)s', datefmt='%m/%d/%Y %I:%M:%S')
+logger = logging.getLogger(__name__)
 
 class MainPage(webapp2.RequestHandler):
     
@@ -35,6 +37,7 @@ class MainPage(webapp2.RequestHandler):
             start_date = datetime.strptime(self.request.get('start_date'), "%Y-%m-%d")
             end_date = datetime.strptime(self.request.get('end_date'), "%Y-%m-%d")
 
+            logger.info('Draw CandleStick Chart, code=%s, start time=%s, end time=%s' % (code, start_date.strftime("%Y/%m/%d"), end_date.strftime("%Y/%m/%d")))
             record_text = []
             for record in db_stock_price.get_price(code, start_date=start_date, end_date=end_date):
                 record_text.append([record.date_time.strftime("%m/%d"), record.low_price, record.open_price, record.close_price, record.high_price])

@@ -9,9 +9,11 @@
 #   Python version : 2.7.2
 #---------------------------------------------
     
-import urllib
+import urllib, logging
 from sgmllib import SGMLParser
-    
+
+logger = logging.getLogger(__name__)
+
 def get_info(market_type, class_no):
     company_list = []
 
@@ -27,7 +29,7 @@ def get_info(market_type, class_no):
         stock.close()
          
         if stock.webexist:
-            print market_type + " " + class_no + " web parser OK......"
+            logger.info(market_type + " " + class_no + " web parser OK......")
             
             for j in range(0, len(stock.stockid)):
                 company_info = CompanyInfo()
@@ -42,7 +44,7 @@ def get_info(market_type, class_no):
                 #company_info.print_info()
                 company_list.append(company_info)
         else:
-            print market_type + " " + class_no + " not exist......"
+            logger.warning( market_type + " " + class_no + " not exist......")
 
     return company_list
 

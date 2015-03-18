@@ -13,15 +13,14 @@ import csv, codecs, urllib, datetime, os, time
 import logging
 from sgmllib import SGMLParser
 
-logging.basicConfig(level=logging.DEBUG, format='%(asctime)s %(message)s', datefmt='%m/%d/%Y %I:%M:%S', filename='D:\\mopstwse.log')
-logger = logging.getLogger('mopstwse')
+logger = logging.getLogger(__name__)
     
 def get_historical_revenue(stock_type, start_date):
     stock = None
-    logger.debug('取得 %s %s全部公司營收資料' % (datetime.datetime.strftime(start_date, '%Y/%m'), stock_type))
+    logger.debug('Get %s market all company revenue data from %s' % (stock_type, datetime.datetime.strftime(start_date, '%Y/%m')))
     #營收網址
     url = "http://mops.twse.com.tw/t21/" + stock_type + "/t21sc03_%s_%s.html" % (start_date.year - 1911, start_date.month)
-    print url
+    #print url
     #解析網頁開始
     webcode = urllib.urlopen(url)
     if webcode.code == 200:

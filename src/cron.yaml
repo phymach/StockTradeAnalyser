@@ -1,4 +1,12 @@
 cron:
-- description: stock Info loader
-  url: /StockInfoLoader
-  schedule: every 10 minutes
+- description: load market price
+  url: /LoadMarketPrice
+  schedule: every 30 minutes
+
+- description: load monthly revenue
+  url: /LoadMonthlyRevenue
+  schedule: every day 10:00
+
+- description: load company info
+  url: /LoadCompanyInfo
+  schedule: every 1 hours

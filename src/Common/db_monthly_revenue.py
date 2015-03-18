@@ -12,8 +12,7 @@ import logging
 from google.appengine.ext import db
 from google.appengine.api import users
 
-logging.basicConfig(level=logging.DEBUG, format='%(asctime)s %(message)s', datefmt='%m/%d/%Y %I:%M:%S', filename='D:\\db_monthly_revenue.log')
-logger = logging.getLogger('db_monthly_revenue')
+logger = logging.getLogger(__name__)
 
 def toInt(val):
     try:
@@ -28,16 +27,16 @@ def toFloat(val):
         return 0.0
 
 class MonthRevenue(db.Model):
-    code                                = db.StringProperty(required=True)      #¤½¥q¥N¸¹
+    code                                = db.StringProperty(required=True)      #ï¿½ï¿½ï¿½qï¿½Nï¿½ï¿½
     date_time                           = db.DateTimeProperty(required=True)
-    month_revenue                       = db.IntegerProperty()                  #·í¤ëÀç¦¬
-    last_month_revenue                  = db.IntegerProperty()                  #¤W¤ëÀç¦¬
-    month_revenue_last_year             = db.IntegerProperty()                  #¥h¦~·í¤ëÀç¦¬
-    percent_month_revenue               = db.FloatProperty()                    #¤W¤ë¤ñ¸û¼W´î(%)
-    percent_month_revenue_last_year     = db.FloatProperty()                    #¥h¦~¦P¤ë¼W´î(%)
-    month_cumulative_revenue            = db.IntegerProperty()                  #·í¤ë²Ö­pÀç¦¬
-    month_cumulative_revenue_last_year  = db.IntegerProperty()                  #¥h¦~²Ö­pÀç¦¬
-    percent_month_cumulative_revenue    = db.FloatProperty()                    #«e´Á¤ñ¸û¼W´î(%)
+    month_revenue                       = db.IntegerProperty()                  #ï¿½ï¿½ï¿½ï¿½ç¦¬
+    last_month_revenue                  = db.IntegerProperty()                  #ï¿½Wï¿½ï¿½ï¿½ç¦¬
+    month_revenue_last_year             = db.IntegerProperty()                  #ï¿½hï¿½~ï¿½ï¿½ï¿½ï¿½ç¦¬
+    percent_month_revenue               = db.FloatProperty()                    #ï¿½Wï¿½ï¿½ï¿½ï¿½Wï¿½ï¿½(%)
+    percent_month_revenue_last_year     = db.FloatProperty()                    #ï¿½hï¿½~ï¿½Pï¿½ï¿½Wï¿½ï¿½(%)
+    month_cumulative_revenue            = db.IntegerProperty()                  #ï¿½ï¿½ï¿½Ö­pï¿½ç¦¬
+    month_cumulative_revenue_last_year  = db.IntegerProperty()                  #ï¿½hï¿½~ï¿½Ö­pï¿½ç¦¬
+    percent_month_cumulative_revenue    = db.FloatProperty()                    #ï¿½eï¿½ï¿½ï¿½ï¿½ï¿½Wï¿½ï¿½(%)
 
 def insert_info(code, date_time, month_revenue, last_month_revenue, month_revenue_last_year, percent_month_revenue, percent_month_revenue_last_year,
                 month_cumulative_revenue, month_cumulative_revenue_last_year, percent_month_cumulative_revenue):

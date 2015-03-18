@@ -14,8 +14,7 @@ import logging
 from google.appengine.ext import db
 from google.appengine.api import users
 
-logging.basicConfig(level=logging.DEBUG, format='%(asctime)s %(message)s', datefmt='%m/%d/%Y %I:%M:%S', filename='D:\\db_company_info.log')
-logger = logging.getLogger('db_company_info')
+logger = logging.getLogger(__name__)
 
 def toInt(val):
     try:

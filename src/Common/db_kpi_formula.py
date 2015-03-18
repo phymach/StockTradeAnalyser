@@ -10,8 +10,7 @@ import logging
 from google.appengine.ext import db
 from google.appengine.api import users
 
-logging.basicConfig(level=logging.DEBUG, format='%(asctime)s %(message)s', datefmt='%m/%d/%Y %I:%M:%S')
-logger = logging.getLogger('db_kpi_formula')
+logger = logging.getLogger(__name__)
 
 class KPIFormula(db.Model):
     username = db.StringProperty(required=True)

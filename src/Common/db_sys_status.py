@@ -16,8 +16,7 @@ import logging
 from google.appengine.ext import db
 from google.appengine.api import users
 
-logging.basicConfig(level=logging.DEBUG, format='%(asctime)s %(message)s', datefmt='%m/%d/%Y %I:%M:%S')
-logger = logging.getLogger('db_sys_status')
+logger = logging.getLogger(__name__)
 
 class SystemStatus(db.Model):
     module_name = db.StringProperty(required=True)
