@@ -14,3 +14,9 @@ indexes:
   properties:
   - name: code
   - name: date_time
+
+- kind: StockPrice
+  properties:
+  - name: code
+  - name: date_time
+    direction: desc

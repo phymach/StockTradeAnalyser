@@ -32,8 +32,12 @@ class LoadMarketPrice(webapp2.RequestHandler):
             
         for stock_code in db_company_info.get_code_list():
             tw_stock_code = stock_code + ".tw"
-            
-            result = ystockquote.get_historical_prices(tw_stock_code, start_date=datetime.strftime(last_update_time, '%Y%m%d'), end_date=datetime.strftime(current_time, '%Y%m%d'))
+            code_last_time = db_stock_price.get_last_date(stock_code)
+            if code_last_time:
+                result = ystockquote.get_historical_prices(tw_stock_code, start_date=datetime.strftime(code_last_time, '%Y%m%d'), end_date=datetime.strftime(current_time, '%Y%m%d'))
+            else:
+                result = ystockquote.get_historical_prices(tw_stock_code, start_date=datetime.strftime(last_update_time, '%Y%m%d'), end_date=datetime.strftime(current_time, '%Y%m%d'))
+                
             for record in result[1:]:
                 db_stock_price.update_price(code=stock_code,
                                             date_time=datetime.strptime(record[0], '%Y-%m-%d'),

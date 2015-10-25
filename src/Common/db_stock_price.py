@@ -62,3 +62,12 @@ def get_price(code, start_date, end_date):
     if result:
         logger.debug('Find record of code=%s, date range: %s <=date_time <= %s.' % (code, datetime.strftime(start_date,'%Y/%m/%d'), datetime.strftime(end_date,'%Y/%m/%d')))
         return result
+    
+def get_last_date(code):
+    q = db.Query(StockPrice)
+    q.filter('code =', code)
+    q.order("-date_time")
+    result = q.fetch(limit=1)
+    if result:
+        logger.debug('Find record of code=%s, last update date is: %s .' % (code, datetime.strftime(result[0].date_time,'%Y/%m/%d')))
+        return result[0].date_time
